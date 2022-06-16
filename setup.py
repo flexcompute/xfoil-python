@@ -25,9 +25,10 @@ from setuptools import setup
 from setuptools.extension import Extension
 from setuptools.command.build_ext import build_ext
 
+here = os.path.abspath(os.path.dirname(__file__))
 __version__ = re.findall(
     r"""__version__ = ["']+([0-9\.]*)["']+""",
-    open('xfoil/__init__.py').read(),
+    open(os.path.join(here, 'xfoil/__init__.py')).read(),
 )[0]
 
 options = {k: 'OFF' for k in ['--opt', '--debug', '--cuda']}
@@ -146,5 +147,5 @@ setup(
     ext_modules=[CMakeExtension('xfoil.xfoil')],
     cmdclass={'build_ext': CMakeBuild},
     install_requires=['numpy'],
-    zip_save=False
+    zip_safe=False
 )

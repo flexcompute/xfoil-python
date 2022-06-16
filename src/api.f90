@@ -277,10 +277,11 @@ contains
         use m_xgeom, only: cang
         use i_xfoil
 
-        integer :: imax
+        integer :: imax, i
         real :: amax
         integer(c_int), intent(in) :: n_panel
         real(c_float), intent(in) :: cv_par, cte_ratio, ctr_ratio, xs_ref1, xs_ref2, xp_ref1, xp_ref2
+        real(c_float) :: X_float(n_panel), Y_float(n_panel)
 
         NPAn = min(n_panel, IQX - 6)
         CVPar = cv_par
@@ -293,6 +294,13 @@ contains
 
         call pangen(.true.)
         if (N>0) call cang(X, Y, N, 1, imax, amax)
+
+        do i = 1, N
+            X_float(i) = X(i)
+            Y_float(i) = Y(i)
+        enddo
+
+        call set_airfoil(X_float, Y_float, N)
     end subroutine repanel
 
     subroutine filter(factor) bind(c, name='filter')
